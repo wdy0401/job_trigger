@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include <Qtimer>
+#include <QTimer>
 
 class job_trigger : public QObject
 {
@@ -15,12 +15,12 @@ signals:
     void show_job(int,const QString &,int);//job number,        job name,       job status
 
 public slots:
-    void start_job(int);
+    void on_click_start_job(int);
     void start_job();
 
 private:
     void load_job();
-    QTimer timer;
+    QTimer * timer;
 };
 
 #endif // JOB_TRIGGER_H
