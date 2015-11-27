@@ -14,6 +14,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+public slots:
+    void add_button(const QString &,const QString &,int,int);
 
 private:
     Ui::MainWindow *ui;

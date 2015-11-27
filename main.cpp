@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
     w.show();
     job_trigger * jt=new job_trigger;
 
+    QObject::connect(jt,&job_trigger::show_job,&w,&MainWindow::add_button);
+
     return a.exec();
 }
 

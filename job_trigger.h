@@ -12,7 +12,7 @@ public:
     explicit job_trigger(QObject *parent = 0);
 
 signals:
-    void show_job(int,const QString &,int);//job number,        job name,       job status
+    void show_job(const QString &,const QString &,int,int);//name,cmdline,number,job status
 
 public slots:
     void on_click_start_job(int);

@@ -14,6 +14,7 @@ void job_trigger::on_click_start_job(int jobnum)
 void job_trigger::start_job()
 {
     qDebug()<<"aa";
+    emit show_job("a","a",1,1);
 }
 
 void job_trigger::load_job()
