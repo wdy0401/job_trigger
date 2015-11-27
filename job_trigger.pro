@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    job_trigger.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    job_trigger.h
 
 FORMS    += mainwindow.ui

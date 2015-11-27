@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "job_trigger.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -6,8 +7,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    QTimer * timer=new QTimer;
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    QTimer * timer=new QTimer(nullptr);
+    job_trigger * jt=new job_trigger;
+    QObject::connect(timer, SIGNAL(timeout()), jt, SLOT(&job_trigger::start_job()));
     timer->start(1000);
     return a.exec();
 }
