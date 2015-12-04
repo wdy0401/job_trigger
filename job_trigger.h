@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QDateTime>
 #include <map>
+#include <string>
 class job;
 class job_trigger : public QObject
 {
@@ -14,16 +15,17 @@ class job_trigger : public QObject
 public:
     explicit job_trigger(QObject *parent = 0);
     void init();
+    void load_job();
+    void load_job(const QString & filename);
 
 signals:
-    void show_job(const QString &,const QString &,int,int);//name,cmdline,number,job status
+    void show_job(const std::string &,const std::string & ,int,int);//name,cmdline,number,job status
 
 public slots:
     void on_click_start_job(int);
     void start_job();
 
 private:
-    void load_job();
     QTimer * timer;
     QDateTime begtime;
     std::map<int,job*> job_map;
@@ -31,12 +33,12 @@ private:
 class job
 {
 public:
-    job(QString,QString,int,int);
+    job(const std::string & ,const std::string & ,int,int);
     void run();
     int get_status();
 private:
-    QString _name;
-    QString _cmd_line;
+    std::string _name;
+    std::string _cmd_line;
     int _job_num;
     int _job_status;//0：没跑过   1：正在跑   2：已结束   3：跑过有错误
     QProcess *_qp;

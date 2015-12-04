@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QPushButton>
-
+using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -15,7 +15,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::add_button(const QString & name,const QString & cmd ,int number ,int status)
+void MainWindow::add_button(const string & name,const string & cmd ,int number ,int status)
 {
     QPushButton * pushButton_3 = new QPushButton(ui->horizontalWidget);
     pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
