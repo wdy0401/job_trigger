@@ -23,7 +23,7 @@ void job_trigger::on_click_start_job(int job_num)
 {
    for(auto iter=job_map.begin();iter!=job_map.end();iter++)
    {
-//          未经测试的功能
+//        not tested yet
 //        if(iter->first==job_num)
 //        {
 //            iter->second->run();
@@ -57,7 +57,7 @@ void job_trigger::load_job(const QString & filename)
         string key=tmpstring.substr(0,fp);
         string value=tmpstring.substr(fp+1,tmpstring.size());
 
-        if(tmpstring.size()==0 || tmpstring[0]=='#')//排除空行和#开头的注释行
+        if(tmpstring.size()==0 || tmpstring[0]=='#')//exclude empty line and line started with #
         {
             continue;
         }
@@ -71,22 +71,22 @@ void job_trigger::load_job(const QString & filename)
             continue;
         }
 
-//          得想个简单的办法
+//          a simply way is needed
 //        if(key=="name")
 //        {
 //            if(cmd_line=="")
 //            {
-//                if(name=="")//第一个name
+//                if(name=="")//the first name
 //                {
 //                    name=value;
 //                    continue;
 //                }
-//                else//前一个name没有cmd_line
+//                else//no cmd_line in pre name
 //                {
 
 //                }
 //            }
-//            else //有前一个cmd_line
+//            else //name with cmd_line ahead
 //            {
 //                if(name=="")
 //                {

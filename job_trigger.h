@@ -40,7 +40,7 @@ private:
     std::string _name;
     std::string _cmd_line;
     int _job_num;
-    int _job_status;//0ï¼šæ²¡è·‘è¿‡   1ï¼šæ­£åœ¨è·‘   2ï¼šå·²ç»“æŸ   3ï¼šè·‘è¿‡æœ‰é”™è¯¯
+    int _job_status;//0£ºÃ»ÅÜ¹ý   1£ºÕýÔÚÅÜ   2£ºÒÑ½áÊø   3£ºÅÜ¹ýÓÐ´íÎó
     QProcess *_qp;
 };
 
@@ -48,16 +48,16 @@ private:
 
 /* job_triger
 
-    å¾…æ·»åŠ å†…å®¹
-        load txtæ–‡æ¡£ä»¥å¾—åˆ°ä»»åŠ¡ä¿¡æ¯
-        åœ¨clickæ—¶è¿è¡Œå¯¹åº”ä»»åŠ¡
-        åœ¨æ—¶é—´æ°å½“æ—¶è¿è¡Œå¯¹åº”ä»»åŠ¡
+    ´ýÌí¼ÓÄÚÈÝ
+        load txtÎÄµµÒÔµÃµ½ÈÎÎñÐÅÏ¢
+        ÔÚclickÊ±ÔËÐÐ¶ÔÓ¦ÈÎÎñ
+        ÔÚÊ±¼äÇ¡µ±Ê±ÔËÐÐ¶ÔÓ¦ÈÎÎñ
 
 */
 
 /* job
 
-    å¾…æ·»åŠ å†…å®¹
-        åœ¨ä¸åŒè¿›ç¨‹è¿è¡Œä»»åŠ¡
-        åœ¨ä»»åŠ¡ è¿›è¡Œ å®Œæˆ å‡ºé”™ æ—¶æ”¹å˜_job_status
+    ´ýÌí¼ÓÄÚÈÝ
+        ÔÚ²»Í¬½ø³ÌÔËÐÐÈÎÎñ
+        ÔÚÈÎÎñ ½øÐÐ Íê³É ³ö´í Ê±¸Ä±ä_job_status
 */
