@@ -40,7 +40,7 @@ private:
     std::string _name;
     std::string _cmd_line;
     int _job_num;
-    int _job_status;//0：没跑过   1：正在跑   2：已结束   3：跑过有错误
+    int _job_status;//0：没跑过   1：正在跑   2：已结束   3：跑过有错误   4+ others 未定义
     QProcess *_qp;
 };
 
