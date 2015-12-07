@@ -36,7 +36,11 @@ void job_trigger::start_job()
     qDebug()<<"aa";
     static int abc=1;
     abc++;
-    emit show_job("a","a",1,abc%4);
+    static string name="a";
+    name=name+"a";
+    static string cmd="b";
+    cmd=cmd+"b";
+    emit show_job(name,cmd,1,abc%4);
 }
 
 void job_trigger::load_job(const QString & filename)
