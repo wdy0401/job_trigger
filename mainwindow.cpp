@@ -24,4 +24,5 @@ void MainWindow::add_button(const string & name,const string & cmd ,int number ,
     button->init(name,cmd,number,status);
 //    button>init(name,cmd,number,status);
     ui->horizontalLayout->addWidget(button);
+    return;
 }

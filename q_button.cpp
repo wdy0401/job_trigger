@@ -33,25 +33,22 @@ void q_button::init(const string & name,const string & cmd ,int number ,int stat
     this->setObjectName(QStringLiteral("pushButton"));
     this->setMouseTracking(true);
     this->setStyleSheet(color_type.c_str());
+    this->setText(_name.c_str());
 }
 
 void q_button::mouseDoubleClickEvent(QMouseEvent *event)
 {
-
+    //qmessage box if running
+    //open process
+    //set stdout file and stderr file // pre done in job_trigger
+    //set singal slot for done or err
 }
 void q_button::mousePressEvent(QMouseEvent *event)
 {
-    if(display_cmd==false)
-    {
-        this->setText("Run\t"+QString::fromStdString(_cmd));
-    }
-    else
-    {
-        this->setText("Run\t"+QString::fromStdString(_name));
-    }
-    display_cmd=!display_cmd;
+    this->setText("Run\t"+QString::fromStdString(_cmd));
+
 }
 void q_button::mouseReleaseEvent(QMouseEvent *event)
 {
-   this->setText("");
+   this->setText(_name.c_str());
 }
