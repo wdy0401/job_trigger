@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <string>
 
+#include"q_button.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +18,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 public slots:
-    void add_button(const std::string & ,const std::string & ,int,int);
+    void add_button(q_button* button);
 
 private:
     Ui::MainWindow *ui;

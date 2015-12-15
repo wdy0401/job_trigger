@@ -7,16 +7,20 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     MainWindow w;
-    job_trigger * jt=new job_trigger;
-
-    jt->init();
-    jt->load_job();
-    QObject::connect(jt,&job_trigger::show_job,&w,&MainWindow::add_button);
-
-
     w.show();
+
+    job_trigger * jt=new job_trigger;
+    jt->init();
+
+    QObject::connect(jt,&job_trigger::show_job_1,&w,&MainWindow::add_button);
+
+
+    jt->load_job();
+
     return a.exec();
 }
+
+// next 状态改变与相应内部处理与展示
 
 /*
 mainwindow 如何展示

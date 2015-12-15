@@ -42,6 +42,7 @@ void q_button::mouseDoubleClickEvent(QMouseEvent *event)
     //open process
     //set stdout file and stderr file // pre done in job_trigger
     //set singal slot for done or err
+    emit double_click();
 }
 void q_button::mousePressEvent(QMouseEvent *event)
 {

@@ -14,6 +14,7 @@ public:
     void init(const std::string & ,const std::string & ,int,int);
 
 signals:
+    void double_click();
 
 public slots:
 

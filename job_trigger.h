@@ -8,6 +8,10 @@
 #include <QDateTime>
 #include <map>
 #include <string>
+
+#include "./q_button.h"
+#include "mainwindow.h"
+
 class job;
 class job_trigger : public QObject
 {
@@ -19,23 +23,33 @@ public:
     void load_job(const QString & filename);
 
 signals:
-    void show_job(const std::string &,const std::string & ,int,int);//name,cmdline,number,job status
+    void show_job_1(q_button *);
 
 public slots:
     void on_click_start_job(int);
-    void start_job();
+    void start_job_ontime();
 
 private:
+    std::string job_name;
+    std::string job_cmdline;
+    int job_count;
+    int job_status;
     QTimer * timer;
     QDateTime begtime;
     std::map<int,job*> job_map;
+    std::map<int,q_button*> button_map;
 };
-class job
+class job : public QObject
 {
+        Q_OBJECT
 public:
     job(const std::string & ,const std::string & ,int,int);
     void run();
     int get_status();
+
+public slots:
+    void stateChanged(QProcess::ProcessState newState);//开始运行时候被触发
+
 private:
     std::string _name;
     std::string _cmd_line;
