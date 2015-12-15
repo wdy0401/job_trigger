@@ -44,12 +44,15 @@ class job : public QObject
         Q_OBJECT
 public:
     job(const std::string & ,const std::string & ,int,int);
-    void run();
     int get_status();
 
 public slots:
     void stateChanged(QProcess::ProcessState newState);//开始运行时候被触发
+    void finished(int exitCode, QProcess::ExitStatus exitStatus);//结束时被触发
+    void run();
 
+signals:
+    void change_status(int);
 private:
     std::string _name;
     std::string _cmd_line;

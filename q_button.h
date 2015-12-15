@@ -17,6 +17,7 @@ signals:
     void double_click();
 
 public slots:
+    void change_status(int);
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
@@ -29,7 +30,6 @@ private:
     int _number;
     int _status;
 
-    bool display_cmd;
 
 };
 

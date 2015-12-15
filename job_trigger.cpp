@@ -34,21 +34,7 @@ void job_trigger::on_click_start_job(int job_num)
 }
 void job_trigger::start_job_ontime()
 {
-//    qDebug()<<"aa";
-    static int abc=0;
-    static string name="a";
-    static string cmd="b";
-    if(abc>5){return;}
-//    q_button * bt=new q_button;
-//    bt->init("name","cmd",1,0);
 
-//    emit show_job_1(bt);
-
-
-
-    abc++;
-    name=name+"a";
-    cmd=cmd+"b";
 }
 
 void job_trigger::load_job(const QString & filename)
@@ -74,12 +60,12 @@ void job_trigger::load_job(const QString & filename)
         {
             continue;
         }
-        if(tmpstring.substr(0,7)=="__END__" && tmpstring.size()==7)
+        else if(tmpstring.substr(0,7)=="__END__" && tmpstring.size()==7)
         {
-            cout<<"break"<<tmpstring<<endl;
-            break;
+            key="end";
+            value="";
         }
-        if(tmpstring.find(_sep)==string::npos)
+        else if(tmpstring.find(_sep)==string::npos)
         {
             continue;
         }
@@ -100,13 +86,18 @@ void job_trigger::load_job(const QString & filename)
                 emit show_job_1(button);
                 button_map[job_count]=button;
 
-
+                QObject::connect(button,&q_button::double_click,new_job,&job::run);
+                QObject::connect(new_job,&job::change_status,button,&q_button::change_status);
 
                 job_name=value;
                 job_cmdline="";
                 job_status=0;
             }
             job_count++;
+            if(key=="end")
+            {
+                break;
+            }
          }
         if(key=="cmd_line")
         {
@@ -126,7 +117,7 @@ void job_trigger::load_job()
 
 
 ////////////////////////////
-/// \brief The job class
+///  The job class
 ///////////////////////////
 
 
@@ -137,29 +128,48 @@ job::job(const string & name,const string & cmd,int num,int sta)
     _cmd_line=cmd;
     _job_num=num;
     _job_status=sta;
+    _qp=nullptr;
 }
 
 void job::run()
 {
+    cerr <<"RunJob\t"<<_name<<endl;
+    if(_job_status==1)
+    {
+        return;
+    }
+    if(_qp!=nullptr)
+    {
+        delete _qp;
+    }
+
     _qp=new QProcess;
+    QObject::connect(_qp,&QProcess::stateChanged,this,&job::stateChanged);
+    QObject::connect(_qp,
+                     static_cast<void (QProcess:: *)(int, QProcess::ExitStatus)>(&QProcess::finished),this,&job::finished);
     _qp->start(_cmd_line.c_str());
 }
 void job::stateChanged(QProcess::ProcessState newState)
 {
-//    if(newState ==        NotRunning,
-//            Starting,
-//            Running)
-
     switch (newState)
     {
-        case QProcess::NotRunning: cout << "NotRunning" << endl; break;
-        case QProcess::Starting: cout << "Starting" << endl; break;
-        case QProcess::Running: cout << "Running" << endl; break;
+        //case QProcess::Starting: cout << "Starting" << endl;{_job_status=1;emit change_status(_job_status);}; break;//这个不在状态分类中
+        case QProcess::Running: cout << "Running" << endl;{_job_status=1;emit change_status(_job_status);}; break;
+        //case QProcess::NotRunning: cout << "NotRunning" << endl;{_job_status=2;emit change_status(_job_status);} break;//这个与状态分类逻辑不一致
         default: break;
     }
-            //,  NotRunning,
-        //Starting,
-        //Running)
+}
+void job::finished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    if(exitCode==0 && exitStatus==QProcess::NormalExit)
+    {
+        _job_status=2;
+    }
+    else
+    {
+        _job_status=3;
+    }
+    emit change_status(_job_status);
 
 }
 

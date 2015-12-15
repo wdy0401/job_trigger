@@ -20,14 +20,7 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
-// next 状态改变与相应内部处理与展示
-
-/*
-mainwindow 如何展示
-
-接收jobt的信号 动态生成格子并展示 格子的uniq ID是任务的序列号 收到double click信号时，发送序列号到job_trigger
-*/
-
+//涉及时间的trigger尚未完成 其余为锦上添花内容 可在有时间时处理
 
 
 /*
