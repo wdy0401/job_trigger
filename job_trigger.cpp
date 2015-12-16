@@ -4,7 +4,6 @@
 #include <QFile>
 
 #include<string>
-#include<iostream>
 using namespace std;
 
 job_trigger::job_trigger(QObject *parent) :
@@ -19,10 +18,12 @@ void job_trigger::init()
     QObject::connect(timer, SIGNAL(timeout()), this, SLOT(start_job_ontime()));
     timer->start(1000);
 
-    job_count=0;
+    job_name="";
+    job_cmdline="";
+    job_status=0;
     job_time=nullptr;
 
-    begtime=QDateTime::currentDateTime();//.toString("yyyy-MM-dd hh:mm:ss ddd");
+    begtime=QDateTime::currentDateTime();
 }
 void job_trigger::start_job_ontime()
 {
@@ -33,9 +34,6 @@ void job_trigger::start_job_ontime()
         {
             continue;
         }
-        cerr << "start info "<<iter->second->get_time()->toString("yyyy-MM-dd hh:mm:ss").toStdString()<<endl;
-        cerr << "start info 1 "<<begtime.msecsTo(*iter->second->get_time())<<endl;
-        cerr << "start info 2 "<<QDateTime::currentDateTime().msecsTo(*iter->second->get_time())<<endl;
         if(begtime.msecsTo(*iter->second->get_time())>0 &&QDateTime::currentDateTime().msecsTo(*iter->second->get_time())<0 &&  iter->second->get_status()==0)
         {
             iter->second->run();
@@ -69,42 +67,21 @@ void job_trigger::load_job(const QString & filename)
             key="end";
             value="";
         }
+        else if(tmpstring.substr(0,9)=="__BEGIN__" && tmpstring.size()==9)
+        {
+            key="begin";
+            value="";
+        }
         else if(tmpstring.find(_sep)==string::npos)
         {
             continue;
         }
 
-        if(key=="name" || key=="end")
+        if(key=="name")
         {
-            if(job_count==0)
-            {
-                job_name=value;
-            }
-            else
-            {
-                job * new_job=new job(job_name,job_cmdline,job_count,job_status,job_time);
-                job_map[job_count]=new_job;
-
-                q_button * button = new q_button();
-                button->init(job_name,job_cmdline,job_count,job_status);
-                emit show_job(button);
-                button_map[job_count]=button;
-
-                QObject::connect(button,&q_button::double_click,new_job,&job::run);
-                QObject::connect(new_job,&job::change_status,button,&q_button::change_status);
-
-                job_name=value;
-                job_cmdline="";
-                job_status=0;
-                job_time=nullptr;
-            }
-            job_count++;
-            if(key=="end")
-            {
-                break;
-            }
-         }
-        if(key=="cmd_line")
+            job_name=value;
+        }
+        if(key=="cmdline")
         {
             job_cmdline=value;
         }
@@ -114,11 +91,32 @@ void job_trigger::load_job(const QString & filename)
         }
         if(key=="time")
         {
-            QDateTime * tmp=new QDateTime;
-            (*tmp)=QDateTime::fromString(QDateTime::currentDateTime().toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
-//            job_time=QDateTime::fromString(QDateTime::currentDateTime().toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
-            job_time=tmp;
-            cerr <<"job_time "<< job_time->toString("yyyy-MM-dd hh:mm:ss").toStdString()<<endl;
+            job_time=new QDateTime;
+            (*job_time)=QDateTime::fromString(QDateTime::currentDateTime().toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
+        }
+        if(key=="begin")
+        {
+            job_name="";
+            job_cmdline="";
+            job_status=0;
+            job_time=nullptr;
+        }
+        if(key=="end")
+        {
+            job_count++;
+
+            job * new_job=new job(job_name,job_cmdline,job_count,job_status,job_time);
+            job_map[job_count]=new_job;
+
+            q_button * button = new q_button();
+            button->init(job_name,job_cmdline,job_count,job_status);
+
+            button_map[job_count]=button;
+
+            QObject::connect(button,&q_button::double_click,new_job,&job::run);
+            QObject::connect(new_job,&job::change_status,button,&q_button::change_status);
+
+            emit show_job(button);
         }
     }
     qf.close();
@@ -129,9 +127,15 @@ void job_trigger::load_job()
 }
 
 
-////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///
+///
 ///  The job class
-///////////////////////////
+///
+///
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -147,7 +151,6 @@ job::job(const string & name,const string & cmd,int num,int sta,QDateTime *time)
 
 void job::run()
 {
-    cerr <<"RunJob\t"<<_name<<endl;
     if(_job_status==1)
     {
         return;
@@ -160,11 +163,11 @@ void job::run()
     _qp=new QProcess;
     QObject::connect(_qp,&QProcess::stateChanged,this,&job::stateChanged);
     QObject::connect(
-                                    _qp,
-                                    static_cast<void (QProcess:: *)(int, QProcess::ExitStatus)>(&QProcess::finished),
-                                    this,
-                                    &job::finished
-                                );
+                        _qp,
+                        static_cast<void (QProcess:: *)(int, QProcess::ExitStatus)>(&QProcess::finished),
+                        this,
+                        &job::finished
+                     );
     _qp->start(_cmd_line.c_str());
 }
 void job::stateChanged(QProcess::ProcessState newState)
@@ -172,8 +175,8 @@ void job::stateChanged(QProcess::ProcessState newState)
     switch (newState)
     {
         //case QProcess::Starting: cout << "Starting" << endl;{_job_status=1;emit change_status(_job_status);}; break;//这个不在状态分类中
-        case QProcess::Running: cout << "Running" << endl;{_job_status=1;emit change_status(_job_status);}; break;
         //case QProcess::NotRunning: cout << "NotRunning" << endl;{_job_status=2;emit change_status(_job_status);} break;//这个与状态分类逻辑不一致
+        case QProcess::Running:{_job_status=1;emit change_status(_job_status);}; break;
         default: break;
     }
 }
@@ -188,7 +191,6 @@ void job::finished(int exitCode, QProcess::ExitStatus exitStatus)
         _job_status=3;
     }
     emit change_status(_job_status);
-
 }
 
 
