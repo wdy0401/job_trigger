@@ -10,37 +10,41 @@ using namespace std;
 job_trigger::job_trigger(QObject *parent) :
     QObject(parent)
 {
+
+}
+void job_trigger::init()
+{
     timer=new QTimer(this);
     begtime =QDateTime::currentDateTime();
     QObject::connect(timer, SIGNAL(timeout()), this, SLOT(start_job_ontime()));
     timer->start(1000);
-    job_count=0;
-}
-void job_trigger::init()
-{
 
-}
-void job_trigger::on_click_start_job(int job_num)
-{
-   for(auto iter=job_map.begin();iter!=job_map.end();iter++)
-   {
-        //not tested yet
-        if(iter->first==job_num)
-        {
-            iter->second->run();
-            break;
-        }
-   }
+    job_count=0;
+    job_time=nullptr;
+
+    begtime=QDateTime::currentDateTime();//.toString("yyyy-MM-dd hh:mm:ss ddd");
 }
 void job_trigger::start_job_ontime()
 {
 
+    for(auto iter=job_map.begin();iter!=job_map.end();iter++)
+    {
+        if(iter->second->get_time()==nullptr)
+        {
+            continue;
+        }
+        cerr << "start info "<<iter->second->get_time()->toString("yyyy-MM-dd hh:mm:ss").toStdString()<<endl;
+        cerr << "start info 1 "<<begtime.msecsTo(*iter->second->get_time())<<endl;
+        cerr << "start info 2 "<<QDateTime::currentDateTime().msecsTo(*iter->second->get_time())<<endl;
+        if(begtime.msecsTo(*iter->second->get_time())>0 &&QDateTime::currentDateTime().msecsTo(*iter->second->get_time())<0 &&  iter->second->get_status()==0)
+        {
+            iter->second->run();
+        }
+    }
 }
 
 void job_trigger::load_job(const QString & filename)
 {
-
-
     QFile qf(filename);
     if(! qf.open(QFile::ReadOnly))
     {
@@ -78,12 +82,12 @@ void job_trigger::load_job(const QString & filename)
             }
             else
             {
-                job * new_job=new job(job_name,job_cmdline,job_count,job_status);
+                job * new_job=new job(job_name,job_cmdline,job_count,job_status,job_time);
                 job_map[job_count]=new_job;
 
                 q_button * button = new q_button();
                 button->init(job_name,job_cmdline,job_count,job_status);
-                emit show_job_1(button);
+                emit show_job(button);
                 button_map[job_count]=button;
 
                 QObject::connect(button,&q_button::double_click,new_job,&job::run);
@@ -92,6 +96,7 @@ void job_trigger::load_job(const QString & filename)
                 job_name=value;
                 job_cmdline="";
                 job_status=0;
+                job_time=nullptr;
             }
             job_count++;
             if(key=="end")
@@ -106,6 +111,14 @@ void job_trigger::load_job(const QString & filename)
         if(key=="status")
         {
             job_status=int(atof(value.c_str()));
+        }
+        if(key=="time")
+        {
+            QDateTime * tmp=new QDateTime;
+            (*tmp)=QDateTime::fromString(QDateTime::currentDateTime().toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
+//            job_time=QDateTime::fromString(QDateTime::currentDateTime().toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
+            job_time=tmp;
+            cerr <<"job_time "<< job_time->toString("yyyy-MM-dd hh:mm:ss").toStdString()<<endl;
         }
     }
     qf.close();
@@ -122,12 +135,13 @@ void job_trigger::load_job()
 
 
 
-job::job(const string & name,const string & cmd,int num,int sta)
+job::job(const string & name,const string & cmd,int num,int sta,QDateTime *time)
 {
     _name=name;
     _cmd_line=cmd;
     _job_num=num;
     _job_status=sta;
+    _time=time;
     _qp=nullptr;
 }
 
@@ -145,8 +159,12 @@ void job::run()
 
     _qp=new QProcess;
     QObject::connect(_qp,&QProcess::stateChanged,this,&job::stateChanged);
-    QObject::connect(_qp,
-                     static_cast<void (QProcess:: *)(int, QProcess::ExitStatus)>(&QProcess::finished),this,&job::finished);
+    QObject::connect(
+                                    _qp,
+                                    static_cast<void (QProcess:: *)(int, QProcess::ExitStatus)>(&QProcess::finished),
+                                    this,
+                                    &job::finished
+                                );
     _qp->start(_cmd_line.c_str());
 }
 void job::stateChanged(QProcess::ProcessState newState)

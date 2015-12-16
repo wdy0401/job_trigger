@@ -60,10 +60,9 @@ void q_button::mouseDoubleClickEvent(QMouseEvent *event)
 }
 void q_button::mousePressEvent(QMouseEvent *event)
 {
-//    this->setText("Run\t"+QString::fromStdString(_cmd));
-
+    this->setText(QString::fromStdString(_cmd));
 }
 void q_button::mouseReleaseEvent(QMouseEvent *event)
 {
-//   this->setText(_name.c_str());
+   this->setText(_name.c_str());
 }

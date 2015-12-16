@@ -23,10 +23,9 @@ public:
     void load_job(const QString & filename);
 
 signals:
-    void show_job_1(q_button *);
+    void show_job(q_button *);
 
 public slots:
-    void on_click_start_job(int);
     void start_job_ontime();
 
 private:
@@ -34,6 +33,8 @@ private:
     std::string job_cmdline;
     int job_count;
     int job_status;
+    QDateTime *job_time;
+
     QTimer * timer;
     QDateTime begtime;
     std::map<int,job*> job_map;
@@ -43,8 +44,10 @@ class job : public QObject
 {
         Q_OBJECT
 public:
-    job(const std::string & ,const std::string & ,int,int);
-    int get_status();
+    job(const std::string & ,const std::string & ,int,int,QDateTime *);
+    int get_status(){return _job_status;}
+    QDateTime * get_time(){return _time;}
+
 
 public slots:
     void stateChanged(QProcess::ProcessState newState);//开始运行时候被触发
@@ -58,6 +61,7 @@ private:
     std::string _cmd_line;
     int _job_num;
     int _job_status;//0：没跑过   1：正在跑   2：已结束   3：跑过有错误   4+ others 未定义
+    QDateTime * _time;
     QProcess *_qp;
 };
 
