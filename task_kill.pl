@@ -8,4 +8,4 @@ for(`tasklist`)
 	return system("taskkill   /F /PID  $pid");
 }
 #wmic也能做 但尚未了解其如何分割显示的内容  
-#信息随全 无从下口
+#信息虽全 无从下口
