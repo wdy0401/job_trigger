@@ -91,8 +91,21 @@ void job_trigger::load_job(const QString & filename)
         }
         if(key=="time")
         {
-            job_time=new QDateTime;
-            (*job_time)=QDateTime::fromString(QDateTime::currentDateTime().toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
+           if(job_time==nullptr)
+           {
+               job_time=new QDateTime;
+               (*job_time)=QDateTime::currentDateTime();
+           }
+            (*job_time)=QDateTime::fromString(job_time->toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
+        }
+        if(key=="nextday")
+        {
+            if(job_time==nullptr)
+            {
+                job_time=new QDateTime;
+                (*job_time)=QDateTime::currentDateTime();
+            }
+            (*job_time)=job_time->addDays(int(atof(value.c_str())));
         }
         if(key=="begin")
         {
