@@ -2,9 +2,12 @@
 #include "job_trigger.h"
 #include <QApplication>
 #include <QMessageBox>
+#include <QTextCodec>
 
 int main(int argc, char *argv[])
 {
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+
     QApplication a(argc, argv);
 
     // Time limitation
