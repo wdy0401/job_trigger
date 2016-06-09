@@ -6,6 +6,7 @@ using namespace std;
 
 q_button::q_button(QObject *parent)
 {
+    Q_UNUSED(parent);
 }
 void q_button::init(const string & name,const string & cmd ,int number ,int status)
 {
@@ -42,13 +43,16 @@ void q_button::change_status(int status)
 
 void q_button::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     emit double_click();
 }
 void q_button::mousePressEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     this->setText(QString::fromStdString(_cmd));
 }
 void q_button::mouseReleaseEvent(QMouseEvent *event)
 {
-   this->setText(_name.c_str());
+    Q_UNUSED(event);
+    this->setText(_name.c_str());
 }

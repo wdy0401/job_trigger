@@ -24,11 +24,9 @@ int main(int argc, char *argv[])
     MainWindow w;
     job_trigger * jt=new job_trigger;
 
-    jt->init();
-
     QObject::connect(jt,&job_trigger::show_job,&w,&MainWindow::add_button);
 
-
+    jt->init();
     jt->load_job();
 
     w.show();
