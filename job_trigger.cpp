@@ -187,8 +187,8 @@ void job::stateChanged(QProcess::ProcessState newState)
 {
     switch (newState)
     {
-        //case QProcess::Starting: cout << "Starting" << endl;{_job_status=1;emit change_status(_job_status);}; break;//这个不在状态分类中
-        //case QProcess::NotRunning: cout << "NotRunning" << endl;{_job_status=2;emit change_status(_job_status);} break;//这个与状态分类逻辑不一致
+        //case QProcess::Starting: cout << "Starting" << endl;{_job_status=1;emit change_status(_job_status);}; break;//not in status classification
+        //case QProcess::NotRunning: cout << "NotRunning" << endl;{_job_status=2;emit change_status(_job_status);} break;//different classifi logic
         case QProcess::Running:{_job_status=1;emit change_status(_job_status);}; break;
         default: break;
     }
