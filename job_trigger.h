@@ -50,8 +50,8 @@ public:
 
 
 public slots:
-    void stateChanged(QProcess::ProcessState newState);//开始运行时候被触发
-    void finished(int exitCode, QProcess::ExitStatus exitStatus);//结束时被触发
+    void stateChanged(QProcess::ProcessState newState);//when start
+    void finished(int exitCode, QProcess::ExitStatus exitStatus);//when change
     void run();
 
 signals:
@@ -60,7 +60,7 @@ private:
     std::string _name;
     std::string _cmd_line;
     int _job_num;
-    int _job_status;//0：没跑过   1：正在跑   2：已结束   3：跑过有错误   4+ others 未定义
+    int _job_status;//0: not run yet  1:runing   2:finished   3:finished with error   4+ others undefined
     QDateTime * _time;
     QProcess *_qp;
 };

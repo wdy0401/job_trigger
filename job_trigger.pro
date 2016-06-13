@@ -19,6 +19,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     job_trigger.h \
-    q_button.h
+    q_button.h \
+    stable.h
 
 FORMS    += mainwindow.ui
