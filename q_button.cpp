@@ -36,6 +36,7 @@ void q_button::change_status(int status)
         case 1:color_type="background-color: rgb(38,166,44);";break;
         case 2:color_type="background-color: rgb(41,89,209);";break;
         case 3:color_type="background-color: rgb(224,7,2);";break;
+        case 4:color_type="background-color: rgb(110,110,110);";break;
         default:color_type="background-color: rgb(150,16,150);";break;
     }
     this->setStyleSheet(color_type.c_str());

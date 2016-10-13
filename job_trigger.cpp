@@ -188,8 +188,7 @@ void job::stateChanged(QProcess::ProcessState newState)
     switch (newState)
     {
         //case QProcess::Starting: cout << "Starting" << endl;{_job_status=1;emit change_status(_job_status);}; break;//not in status classification
-        //case QProcess::NotRunning: cout << "NotRunning" << endl;{_job_status=2;emit change_status(_job_status);} break;//different classifi logic
-        // NotRunning may be mean this cmdline is not available
+        case QProcess::NotRunning:{_job_status=4;emit change_status(_job_status);} break;
         case QProcess::Running:{_job_status=1;emit change_status(_job_status);}; break;
         default: break;
     }
