@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // Time limitation
+    /*
     {
         QDateTime current_date_time = QDateTime::currentDateTime();
         QString current_date = current_date_time.toString("yyyy-MM-dd");
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
             return 0;
         }
     }
+    */
 
     MainWindow w;
     job_trigger * jt=new job_trigger;
