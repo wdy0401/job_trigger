@@ -77,3 +77,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+job_trigger.vcxproj
+job_trigger.vcxproj.filters
+Win32/
