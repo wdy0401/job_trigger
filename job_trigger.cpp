@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFile>
+#include <QDate>
 
 #include<string>
 using namespace std;
@@ -28,13 +29,19 @@ void job_trigger::init()
 void job_trigger::start_job_ontime()
 {
 
+    if(QDate::currentDate().dayOfWeek() > 5)
+    {
+        return;
+    }
     for(auto iter=job_map.begin();iter!=job_map.end();iter++)
     {
         if(iter->second->get_time()==nullptr)
         {
             continue;
         }
-        if(begtime.msecsTo(*iter->second->get_time())>0 &&QDateTime::currentDateTime().msecsTo(*iter->second->get_time())<0 &&  iter->second->get_status()==0)
+        if(begtime.msecsTo(*iter->second->get_time())>0
+                && QDateTime::currentDateTime().msecsTo(*iter->second->get_time())<0
+                && iter->second->get_status()==0)
         {
             iter->second->run();
         }
@@ -96,7 +103,7 @@ void job_trigger::load_job(const QString & filename)
                job_time=new QDateTime;
                (*job_time)=QDateTime::currentDateTime();
            }
-            (*job_time)=QDateTime::fromString(job_time->toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
+           (*job_time)=QDateTime::fromString(job_time->toString("yyyy-MM-dd")+" "+value.c_str(), "yyyy-MM-dd hh:mm:ss");
         }
         if(key=="nextday")
         {

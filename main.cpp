@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
         QString current_date = current_date_time.toString("yyyy-MM-dd");
         if(current_date>"2016-12-31")
         {
-            QMessageBox::about(0,"本软件已过期","请联系兴证期货资管部续期");
+            QMessageBox::about(0,"本软件已过期","本软件已过期");
             return 0;
         }
     }
