@@ -57,6 +57,7 @@ void job_trigger::load_job(const QString & filename)
     }
     QTextStream in(&qf);
 
+    int nextday=0;
     while (!in.atEnd())
     {
         string _sep="=";
@@ -113,6 +114,7 @@ void job_trigger::load_job(const QString & filename)
                 (*job_time)=QDateTime::currentDateTime();
             }
             (*job_time)=job_time->addDays(int(atof(value.c_str())));
+            nextday=int(atof(value.c_str()));
         }
         if(key=="begin")
         {
@@ -129,7 +131,13 @@ void job_trigger::load_job(const QString & filename)
             job_map[job_count]=new_job;
 
             q_button * button = new q_button();
-            button->init(job_name,job_cmdline,job_count,job_status,job_time->toString("hh:mm").toStdString());
+            string job_time_display=job_time->toString("hh:mm").toStdString();
+            if(nextday>0)
+            {
+                job_time_display=job_time_display+"   next day "+to_string(nextday);
+            }
+            nextday=0;
+            button->init(job_name,job_cmdline,job_count,job_status,job_time_display);
 
             button_map[job_count]=button;
 
