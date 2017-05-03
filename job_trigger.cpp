@@ -113,7 +113,7 @@ void job_trigger::load_job(const QString & filename)
                 job_time=new QDateTime;
                 (*job_time)=QDateTime::currentDateTime();
             }
-            (*job_time)=job_time->addDays(int(atof(value.c_str())));
+            (*job_time)=job_time->addDays(atoi(value.c_str()));
             nextday=int(atof(value.c_str()));
         }
         if(key=="begin")
