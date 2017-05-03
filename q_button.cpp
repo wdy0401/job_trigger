@@ -8,12 +8,13 @@ q_button::q_button(QObject *parent)
 {
     Q_UNUSED(parent);
 }
-void q_button::init(const string & name,const string & cmd ,int number ,int status)
+void q_button::init(const string & name,const string & cmd ,int number ,int status,const std::string & tm)
 {
     _name=name;
     _cmd=cmd;
     _number=number;
     _status=status;
+    _tm=tm;
 
     this->setFixedHeight(75);
     this->setObjectName(QStringLiteral("pushButton"));
@@ -50,7 +51,7 @@ void q_button::mouseDoubleClickEvent(QMouseEvent *event)
 void q_button::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    this->setText(QString::fromStdString(_cmd));
+    this->setText(QString::fromStdString(_tm)+"\n"+QString::fromStdString(_cmd));
 }
 void q_button::mouseReleaseEvent(QMouseEvent *event)
 {

@@ -11,7 +11,7 @@ class q_button : public QPushButton
     Q_OBJECT
 public:
     explicit q_button(QObject *parent = 0);
-    void init(const std::string & ,const std::string & ,int,int);
+    void init(const std::string & ,const std::string & ,int,int,const std::string & );
 
 signals:
     void double_click();
@@ -27,6 +27,7 @@ protected:
 private:
     std::string _name;
     std::string _cmd ;
+    std::string _tm ;
     int _number;
     int _status;
 

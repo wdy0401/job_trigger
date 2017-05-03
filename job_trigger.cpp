@@ -129,7 +129,7 @@ void job_trigger::load_job(const QString & filename)
             job_map[job_count]=new_job;
 
             q_button * button = new q_button();
-            button->init(job_name,job_cmdline,job_count,job_status);
+            button->init(job_name,job_cmdline,job_count,job_status,job_time->toString("hh:mm").toStdString());
 
             button_map[job_count]=button;
 
