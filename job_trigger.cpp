@@ -131,12 +131,17 @@ void job_trigger::load_job(const QString & filename)
             job_map[job_count]=new_job;
 
             q_button * button = new q_button();
-            string job_time_display=job_time->toString("hh:mm").toStdString();
-            if(nextday>0)
+            string job_time_display;
+            if(job_time != nullptr)
             {
-                job_time_display=job_time_display+"   next day "+to_string(nextday);
+                job_time_display=job_time->toString("hh:mm").toStdString();
+                if(nextday>0)
+                {
+                    job_time_display=job_time_display+"   next day "+to_string(nextday);
+                }
+                nextday=0;
             }
-            nextday=0;
+            else{job_time_display="No timer double click to run";}
             button->init(job_name,job_cmdline,job_count,job_status,job_time_display);
 
             button_map[job_count]=button;
