@@ -80,3 +80,4 @@ $RECYCLE.BIN/
 job_trigger.vcxproj
 job_trigger.vcxproj.filters
 Win32/
+.vs/job_trigger/v14/.suo

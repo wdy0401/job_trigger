@@ -3,13 +3,25 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextCodec>
+#include<iostream>
 
 int main(int argc, char *argv[])
 {
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
     QApplication a(argc, argv);
+    foreach (const QString &path, a.libraryPaths())
+    {
+          std::cerr<<path.toStdString()<<std::endl;
+    }
 
+
+    //QApplication::addLibraryPath("C:/QT_DLL/plugins");
+
+
+    foreach (const QString &path, a.libraryPaths())
+    {
+          std::cerr<<path.toStdString()<<std::endl;
+    }
     // Time limitation
     /*
     {
